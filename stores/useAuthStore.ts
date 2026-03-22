@@ -22,3 +22,6 @@ export const useAuthStore = create<AuthState>((set) => ({
   setIsLoading: (isLoading) => set({ isLoading }),
   clearAuth: () => set({ profile: null, studentProfile: null, isLoading: false }),
 }))
+
+
+// jkfnrkjgnrjgnjrjgnognoigjoitjoitjoijgoitjgtoigjtoigjtgoijtoi
