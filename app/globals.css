@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+/* ─── Adeleke University Brand Theme ─────────────────────────────────────── */
+/* Primary: Adeleke Deep Green | Accent: Adeleke Gold                         */
+
+@theme inline {
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+  --color-popover:              var(--popover);
+  --color-popover-foreground:   var(--popover-foreground);
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+  --color-secondary:            var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-destructive:          var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:               var(--border);
+  --color-input:                var(--input);
+  --color-ring:                 var(--ring);
+  --color-sidebar:              var(--sidebar);
+  --color-sidebar-foreground:   var(--sidebar-foreground);
+  --color-sidebar-primary:      var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:       var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border:       var(--sidebar-border);
+  --color-sidebar-ring:         var(--sidebar-ring);
+  --color-gold:                 var(--gold);
+  --color-gold-foreground:      var(--gold-foreground);
+  --color-success:              var(--success);
+  --color-warning:              var(--warning);
+  --color-info:                 var(--info);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ─── Light Mode Variables ───────────────────────────────────────────────── */
+:root {
+  --radius: 0.625rem;
+
+  /* Adeleke University Green */
+  --primary:              #006B3E;
+  --primary-foreground:   #ffffff;
+
+  /* Adeleke University Gold */
+  --gold:                 #C9A227;
+  --gold-foreground:      #1a1000;
+  --secondary:            #C9A227;
+  --secondary-foreground: #1a1000;
+
+  --background:           #f8faf9;
+  --foreground:           #0f1a12;
+
+  --card:                 #ffffff;
+  --card-foreground:      #0f1a12;
+
+  --popover:              #ffffff;
+  --popover-foreground:   #0f1a12;
+
+  --muted:                #e8f0eb;
+  --muted-foreground:     #4a6154;
+
+  --accent:               #d4edda;
+  --accent-foreground:    #006B3E;
+
+  --destructive:          #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border:               #d1e0d7;
+  --input:                #d1e0d7;
+  --ring:                 #006B3E;
+
+  /* Status colors */
+  --success:              #16a34a;
+  --warning:              #d97706;
+  --info:                 #2563eb;
+
+  /* Sidebar */
+  --sidebar:              #003d22;
+  --sidebar-foreground:   #e8f5ee;
+  --sidebar-primary:      #C9A227;
+  --sidebar-primary-foreground: #1a1000;
+  --sidebar-accent:       #004d2b;
+  --sidebar-accent-foreground: #c8e6d4;
+  --sidebar-border:       #005230;
+  --sidebar-ring:         #C9A227;
+}
+
+/* ─── Dark Mode ─────────────────────────────────────────────────────────── */
+.dark {
+  --background:           #0a140d;
+  --foreground:           #e8f5ee;
+  --card:                 #0d1f12;
+  --card-foreground:      #e8f5ee;
+  --popover:              #0d1f12;
+  --popover-foreground:   #e8f5ee;
+  --primary:              #00a05e;
+  --primary-foreground:   #ffffff;
+  --secondary:            #C9A227;
+  --secondary-foreground: #0a140d;
+  --muted:                #132b1a;
+  --muted-foreground:     #7aab8c;
+  --accent:               #1a3d25;
+  --accent-foreground:    #86efac;
+  --destructive:          #f87171;
+  --destructive-foreground: #0a140d;
+  --border:               #1f3d28;
+  --input:                #1f3d28;
+  --ring:                 #00a05e;
+  --sidebar:              #060f08;
+  --sidebar-foreground:   #c8e6d4;
+  --sidebar-primary:      #C9A227;
+  --sidebar-primary-foreground: #1a1000;
+  --sidebar-accent:       #0d1f12;
+  --sidebar-accent-foreground: #86efac;
+  --sidebar-border:       #132b1a;
+  --sidebar-ring:         #C9A227;
+}
+
+/* ─── Base Styles ────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: var(--ring);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+  }
+}
+
+/* ─── Custom Utilities ───────────────────────────────────────────────────── */
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@utility focus-ring {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ─── Typography Utilities ───────────────────────────────────────────────── */
+@utility page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  line-height: 1.2;
+}
+
+@utility section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+@utility label-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+@utility helper-text {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* ─── Card Utilities ─────────────────────────────────────────────────────── */
+@utility stat-card {
+  background-color: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06);
+}
+
+@utility glass-card {
+  background-color: rgb(255 255 255 / 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
