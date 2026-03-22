@@ -46,6 +46,6 @@ email_templates/
 **/email_templates/
 
 # Supabase
-.supabase/
-supabase/
-**/supabase/
+.supabased/
+supabased/
+**/supabased/
