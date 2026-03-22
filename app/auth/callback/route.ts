@@ -24,21 +24,8 @@ export async function GET(request: Request) {
           .eq('id', data.user.id),
       ])
 
-      // Redirect based on role
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', data.user.id)
-        .single()
-
-      if (profile?.role === 'STUDENT') {
-        // Students must upload their photo before accessing the app
-        return NextResponse.redirect(`${origin}/onboarding/photo-upload`)
-      }
-
-      const role = profile?.role as UserRole | undefined
-      const dest = role ? ROLE_DASHBOARD[role] : '/auth/login'
-      return NextResponse.redirect(`${origin}${dest}`)
+      // Redirect to success page instead of direct dashboard/onboarding
+      return NextResponse.redirect(`${origin}/auth/confirm-success`)
     }
   }
 

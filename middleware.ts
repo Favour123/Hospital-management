@@ -4,7 +4,7 @@ import { ROLE_DASHBOARD, canAccessRoute } from '@/lib/utils/rbac'
 import type { UserRole } from '@/types'
 
 // Pages that are always accessible without authentication
-const PUBLIC_PATHS = ['/auth/login', '/auth/signup', '/auth/verify']
+const PUBLIC_PATHS = ['/auth/login', '/auth/signup', '/auth/verify', '/auth/confirm-success']
 
 // The callback route must ALWAYS pass through so that Supabase can
 // exchange the one-time code for a session – even if the user already
@@ -26,6 +26,11 @@ export async function middleware(request: NextRequest) {
 
     // ── Public paths ─────────────────────────────────────────────────────
     if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
+      // Allow users to see the confirmation success page even if authenticated
+      if (pathname.startsWith('/auth/confirm-success')) {
+        return supabaseResponse
+      }
+
       if (user) {
         // Already authenticated → send to their dashboard
         const { data: profile } = await supabase

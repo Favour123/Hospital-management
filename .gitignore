@@ -40,3 +40,12 @@ Thumbs.db
 prisma/migrations/
 migrations/
 **/migrations/
+
+# Email templates
+email_templates/
+**/email_templates/
+
+# Supabase
+.supabase/
+supabase/
+**/supabase/

@@ -1,8 +1,20 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import type { Cookie } from '@supabase/auth-helpers-shared' // or local alias
 
-/** Fail-fast: treat user as unauthenticated if Supabase doesn't respond in time */
+type SupabaseCookie = {
+  name: string
+  value: string
+  options?: {
+    path?: string
+    domain?: string
+    maxAge?: number
+    expires?: Date
+    httpOnly?: boolean
+    secure?: boolean
+    sameSite?: 'lax' | 'strict' | 'none'
+  }
+}
+
 const AUTH_TIMEOUT_MS = 8_000
 
 export async function updateSession(request: NextRequest) {
@@ -16,7 +28,7 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-        setAll(cookiesToSet: Cookie[]) {
+        setAll(cookiesToSet: SupabaseCookie[]) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
