@@ -35,3 +35,8 @@ build
 
 # OS
 Thumbs.db
+
+# Database migrations
+prisma/migrations/
+migrations/
+**/migrations/

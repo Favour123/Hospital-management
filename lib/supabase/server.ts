@@ -1,5 +1,6 @@
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import type { Cookie } from '@supabase/auth-helpers-shared' // if available
 
 export async function createServerClient() {
   const cookieStore = await cookies()
@@ -12,7 +13,7 @@ export async function createServerClient() {
         getAll() {
           return cookieStore.getAll()
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: Cookie[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) => {
               cookieStore.set(name, value, options)
