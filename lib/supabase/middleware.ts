@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import type { Cookie } from '@supabase/auth-helpers-shared' // or local alias
 
 /** Fail-fast: treat user as unauthenticated if Supabase doesn't respond in time */
 const AUTH_TIMEOUT_MS = 8_000
@@ -39,5 +40,3 @@ export async function updateSession(request: NextRequest) {
 
   return { supabaseResponse, user, supabase }
 }
-
-// ...existing code...
