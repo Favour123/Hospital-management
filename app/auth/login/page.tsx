@@ -14,7 +14,6 @@ export default function LoginPage() {
             <span className="text-sm font-black text-primary-foreground">AU</span>
           </div>
           <div>
-            <p className="text-xl font-bold text-sidebar-foreground">SMARTMED</p>
             <p className="text-xs text-sidebar-foreground/60">Adeleke University Medical Center</p>
           </div>
         </div>
@@ -56,7 +55,6 @@ export default function LoginPage() {
               <span className="text-sm font-black text-primary-foreground">AU</span>
             </div>
             <div>
-              <p className="text-xl font-bold text-foreground">SMARTMED</p>
               <p className="text-xs text-muted-foreground">Adeleke University Medical Center</p>
             </div>
           </div>

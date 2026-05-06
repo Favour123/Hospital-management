@@ -37,7 +37,6 @@ export default function ConfirmSuccessPage() {
           <span className="text-sm font-black text-primary-foreground">AU</span>
         </div>
         <div>
-          <p className="text-xl font-bold text-foreground">SMARTMED</p>
           <p className="text-xs text-muted-foreground">Adeleke University Medical Center</p>
         </div>
       </div>
@@ -55,7 +54,7 @@ export default function ConfirmSuccessPage() {
 
         <CardContent className="text-center px-8 py-6">
           <p className="text-muted-foreground leading-relaxed">
-            Welcome to SMARTMED. You can now access your medical records, appointments, and more. 
+            You can now access your medical records, appointments, and more. 
             We are redirecting you to your portal in <span className="font-bold text-primary tabular-nums">{countdown}s</span>...
           </p>
         </CardContent>

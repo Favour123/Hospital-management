@@ -4,7 +4,7 @@ import './globals.css'
 import { Providers } from '@/components/Providers'
 
 export const metadata: Metadata = {
-  title: 'SMARTMED | Adeleke University Medical Center',
+  title: ' Adeleke University Medical Center',
   description:
     'Computerized Medical Record Management System for Adeleke University Medical Center',
   icons: { icon: '/favicon.ico' },

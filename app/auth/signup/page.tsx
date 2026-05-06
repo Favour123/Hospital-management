@@ -3,7 +3,7 @@ import { SignupForm } from '@/components/auth/SignupForm'
 import { UserPlus } from 'lucide-react'
 import Link from 'next/link'
 
-export const metadata: Metadata = { title: 'Create Account | SMARTMED' }
+export const metadata: Metadata = { title: 'Create Account' }
 
 export default function SignupPage() {
   return (
@@ -19,7 +19,7 @@ export default function SignupPage() {
             Create Account
           </h1>
           <p className="text-muted-foreground mt-1">
-            Register for the SMARTMED Medical Portal
+            Register for the Medical Portal
           </p>
         </div>
 

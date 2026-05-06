@@ -16,7 +16,7 @@ import { createClient } from '@/lib/supabase/client'
 
 const schema = z.object({
   fullName: z.string().min(2, 'Full name is required'),
-  role: z.enum(['ADMIN', 'RECEPTIONIST', 'DOCTOR', 'NURSE', 'STUDENT', 'PHARMACY'], {
+  role: z.enum(['ADMIN', 'DOCTOR', 'STUDENT'], {
     required_error: "Please select a role",
   }),
   idNumber: z.string().min(4, 'ID number is required'),
@@ -103,9 +103,6 @@ export function SignupForm() {
                   <SelectContent>
                     <SelectItem value="STUDENT">Student</SelectItem>
                     <SelectItem value="DOCTOR">Doctor</SelectItem>
-                    <SelectItem value="NURSE">Nurse</SelectItem>
-                    <SelectItem value="PHARMACY">Pharmacist</SelectItem>
-                    <SelectItem value="RECEPTIONIST">Receptionist</SelectItem>
                     <SelectItem value="ADMIN">Administrator</SelectItem>
                   </SelectContent>
                 </Select>
