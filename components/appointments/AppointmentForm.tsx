@@ -18,7 +18,7 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import { resolvePatientId } from '@/lib/utils/resolvePatient'
 
 const schema = z.object({
-  patient_id: z.string().min(1, 'Patient ID or Matric Number is required'),
+  patient_id: z.string().optional(),
   preferred_date: z.string().min(1, 'Preferred date is required'),
   reason: z.string().min(5, 'Please provide a reason'),
   notes: z.string().optional(),
@@ -39,18 +39,31 @@ export function AppointmentForm({ patientId, patientName: initialPatientName, mo
     patientId && initialPatientName ? { id: patientId, name: initialPatientName } : null
   )
 
+  const isStudent = profile?.role === 'STUDENT'
+
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { patient_id: patientId ?? '' },
+    defaultValues: { 
+      patient_id: patientId ?? '',
+      preferred_date: '',
+      reason: '',
+      notes: '',
+    },
   })
 
   async function onSubmit(data: FormData) {
+    // If not a student and no patient ID was passed in props, validate the input
+    if (!isStudent && !patientId && !data.patient_id) {
+      form.setError('patient_id', { message: 'Patient ID is required' })
+      return
+    }
+
     let actualPatientId = data.patient_id
     
     // Students have their ID resolved in the backend via session
-    if (profile?.role !== 'STUDENT') {
+    if (!isStudent) {
       setResolving(true)
-      const result = await resolvePatientId(data.patient_id)
+      const result = await resolvePatientId(data.patient_id!)
       setResolving(false)
       if (!result) return
       actualPatientId = result.id
@@ -61,7 +74,7 @@ export function AppointmentForm({ patientId, patientName: initialPatientName, mo
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        patient_id: actualPatientId,
+        patient_id: actualPatientId || null,
         preferred_date: data.preferred_date,
         reason: data.reason,
         notes: data.notes,
@@ -74,7 +87,6 @@ export function AppointmentForm({ patientId, patientName: initialPatientName, mo
     router.push('/appointments')
   }
 
-  const isStudent = profile?.role === 'STUDENT'
   const patientNameDisplay = resolvedPatient?.name || initialPatientName
 
   return (

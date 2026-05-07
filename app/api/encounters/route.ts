@@ -15,16 +15,27 @@ export async function GET(req: NextRequest) {
 
   let query = supabase
     .from('encounters')
-    .select('*, doctor:profiles!doctor_id(full_name, id_number, role), patient:patients(full_name, patient_id, id_number)')
+    .select('*, doctor:profiles!doctor_id(full_name, id_number, role), patient:patients(full_name, patient_id, id_number, user_id)')
     .order('created_at', { ascending: false })
 
-  // RLS might already handle this, but explicit filtering for students:
+  // RLS handles the heavy lifting, but explicit filtering for students:
   if (profile?.role === 'STUDENT') {
-    const { data: pat } = await supabase
+    // Try finding by user_id first
+    let { data: pat } = await supabase
       .from('patients')
       .select('id')
-      .eq('id_number', profile.id_number ?? '')
-      .single()
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    // Fallback to id_number if not found by user_id
+    if (!pat && profile.id_number) {
+      const { data: patByNum } = await supabase
+        .from('patients')
+        .select('id')
+        .ilike('id_number', profile.id_number)
+        .maybeSingle()
+      pat = patByNum
+    }
     
     if (!pat) return NextResponse.json([])
     query = query.eq('patient_id', pat.id)
@@ -35,32 +46,37 @@ export async function GET(req: NextRequest) {
   const { data, error } = await query.limit(50)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // ─── Resolve Student Profiles (Dynamic Match via id_number) ───
+  // ─── Resolve Student Profiles (via user_id or id_number) ───
+  const patientUserIds = data.map((enc: any) => enc.patient?.user_id).filter(Boolean)
   const idNumbers = data.map((enc: any) => enc.patient?.id_number).filter(Boolean)
-  if (idNumbers.length > 0) {
+
+  if (patientUserIds.length > 0 || idNumbers.length > 0) {
     const { data: studentData } = await supabase
       .from('profiles')
       .select(`
+        id,
         id_number, 
         role, 
         full_name,
         student:student_profiles(photo_url, photo_done, email_done)
       `)
-      .in('id_number', idNumbers)
+      .or(`id.in.(${patientUserIds.join(',')}),id_number.in.(${idNumbers.map(id => `"${id}"`).join(',')})`)
       .eq('role', 'STUDENT')
 
     if (studentData) {
-      const studentMap = Object.fromEntries(studentData.map((p: any) => [p.id_number, p]))
+      const studentMapById = Object.fromEntries(studentData.map((p: any) => [p.id, p]))
+      const studentMapByNumber = Object.fromEntries(studentData.map((p: any) => [p.id_number, p]))
+
       data.forEach((enc: any) => {
-        if (enc.patient?.id_number) {
-          const profile = studentMap[enc.patient.id_number]
-          if (profile) {
-            enc.student_context = {
-              role: profile.role,
-              photo_url: profile.student?.[0]?.photo_url || null,
-              photo_done: profile.student?.[0]?.photo_done || false,
-              email_done: profile.student?.[0]?.email_done || false,
-            }
+        const student = (enc.patient?.user_id && studentMapById[enc.patient.user_id]) || 
+                        (enc.patient?.id_number && studentMapByNumber[enc.patient.id_number])
+        
+        if (student) {
+          enc.student_context = {
+            role: student.role,
+            photo_url: student.student?.[0]?.photo_url || null,
+            photo_done: student.student?.[0]?.photo_done || false,
+            email_done: student.student?.[0]?.email_done || false,
           }
         }
       })

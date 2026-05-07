@@ -20,12 +20,10 @@ export default function AppointmentsPage() {
   const canCreate = profile?.role !== 'PHARMACY'
 
   const load = useCallback(async () => {
-    const supabase = createClient()
-    const { data } = await supabase
-      .from('appointments')
-      .select('*, patient:patients(full_name, patient_id), assignee:profiles!assigned_to(full_name, role)')
-      .order('created_at', { ascending: false })
-    setAppointments((data as Appointment[]) ?? [])
+    setLoading(true)
+    const res = await fetch('/api/appointments')
+    const data = res.ok ? await res.json() : []
+    setAppointments(data)
     setLoading(false)
   }, [])
 
